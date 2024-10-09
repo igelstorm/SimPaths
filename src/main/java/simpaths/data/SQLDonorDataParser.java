@@ -126,79 +126,165 @@ public class SQLDonorDataParser {
             stat.execute(
 
                 "DROP TABLE IF EXISTS " + tableName + " CASCADE;"
-                + "CREATE TABLE " + tableName + " AS (SELECT " + stringAppender(inputPersonStaticColumnNames) + " FROM " + taxDonorInputFileName + ");"
+//                + "CREATE TABLE " + tableName + " AS (SELECT " + stringAppender(inputPersonStaticColumnNames) + " FROM " + taxDonorInputFileName + ");"
+                + "CREATE TABLE " + tableName + " ("
+                        + "IDHH BIGINT," +
+                        "ID BIGINT NOT NULL PRIMARY KEY," +
+                        "IDFATHER BIGINT," +
+                        "IDMOTHER BIGINT," +
+                        "IDPARTNER BIGINT," +
+                        "DAG INT NOT NULL," +
+                        "COUNTRY VARCHAR_IGNORECASE," +
+                        "EDUCATION VARCHAR_IGNORECASE," +
+                        "DGN VARCHAR_IGNORECASE," +
+                        "DRGN1 INT," +
+                        "WEIGHT DOUBLE," +
+                        "HEALTH VARCHAR_IGNORECASE," +
+                        "LCS INT," +
+                        "CARER INT," +
+                        Parameters.HOURS_WORKED_WEEKLY.toUpperCase() + " INT," +
+                        "DLLTSD INT," +
+                        "YEM DOUBLE," +
+                        "YSE DOUBLE," +
+                        "TU_BU_UK_HEADID BIGINT," +
+                        "ACTIVITY_STATUS VARCHAR_IGNORECASE," +
+                        "SIMULATION_TIME INT DEFAULT " + startYear + "," +
+                        "SIMULATION_RUN INT DEFAULT 0" +
+                        ");" +
+                "INSERT INTO " + tableName +
+                    "(" +
+                        "IDHH," +
+                        "ID," +
+                        "IDFATHER," +
+                        "IDMOTHER," +
+                        "IDPARTNER," +
+                        "DAG," +
+                        "COUNTRY," +
+                        "EDUCATION," +
+                        "DGN," +
+                        "DRGN1," +
+                        "WEIGHT," +
+                        "HEALTH," +
+                        "LCS," +
+                        "CARER," +
+                        Parameters.HOURS_WORKED_WEEKLY.toUpperCase() + "," +
+                        "DLLTSD," +
+                        "YEM," +
+                        "YSE," +
+                        "TU_BU_UK_HEADID," +
+                        "ACTIVITY_STATUS" +
+                    ")" +
+                        "SELECT " +
+                        "IDHH," +
+                        "IDPERSON," +
+                        "IDFATHER," +
+                        "IDMOTHER," +
+                        "IDPARTNER," +
+                        "DAG," +
+                        "CASE " +
+                            "WHEN DCT = " + country.getEuromodCountryCode() + " THEN " + country + " " +
+                        "END AS COUNTRY," +
+                        "CASE " +
+                            "WHEN DEH < 2 THEN 'Low' " +
+                            "WHEN DEH >= 2 AND deh < 5 THEN 'Medium' " +
+                            "WHEN DEH = 5 THEN 'High' " +
+                        "END AS EDUCATION," +
+                        "CASE " +
+                            "WHEN DGN = 0 THEN 'Female' " +
+                            "WHEN DGN = 1 THEN 'Male' " +
+                        "END AS DGN," +
+                        "DRGN1," +
+                        "DWT AS WEIGHT," +
+                        "CASE " +
+                            "WHEN LES != 8 THEN 'Good' " +
+                            "WHEN LES = 8 THEN 'Poor' " +
+                        "END AS HEALTH," +
+                        "LCS," +
+                        "LCR01 AS CARER," +
+                        "LHW AS " + Parameters.HOURS_WORKED_WEEKLY.toUpperCase() + "," +
+                        "DDI AS DLLTSD," +
+                        "YEM," +
+                        "YSE," +
+                        "TU_BU_UK_HEADID," +
+                        "CASE " +
+                            "WHEN LES >=1 AND LES <= 3 THEN 'EmployedOrSelfEmployed' " +
+                            "WHEN LES = 0 OR LES = 6 THEN 'Student' " +
+                            "WHEN LES = 4 THEN 'Retired' " +
+                            "WHEN LES = 5 OR LES >= 7 THEN 'NotEmployed' " +
+                        "END AS ACTIVITY_STATUS " +
+                        "FROM " + taxDonorInputFileName + ";"
 
                 //Add id column
-                + "ALTER TABLE " + tableName + " ALTER COLUMN IDPERSON RENAME TO ID;"
-                + "ALTER TABLE " + tableName + " ALTER COLUMN ID BIGINT NOT NULL;"
-                + "ALTER TABLE " + tableName + " ADD PRIMARY KEY (ID);"
+//                + "ALTER TABLE " + tableName + " ALTER COLUMN IDPERSON RENAME TO ID;"
+//                + "ALTER TABLE " + tableName + " ALTER COLUMN ID BIGINT NOT NULL;"
+//                + "ALTER TABLE " + tableName + " ADD PRIMARY KEY (ID);"
 
                 //Add rest of PanelEntityKey
-                + "ALTER TABLE " + tableName + " ADD COLUMN SIMULATION_TIME INT DEFAULT " + startYear + ";"
-                + "ALTER TABLE " + tableName + " ADD COLUMN SIMULATION_RUN INT DEFAULT 0;"
+//                + "ALTER TABLE " + tableName + " ADD COLUMN SIMULATION_TIME INT DEFAULT " + startYear + ";"
+//                + "ALTER TABLE " + tableName + " ADD COLUMN SIMULATION_RUN INT DEFAULT 0;"
 
                 //Reclassify EUROMOD variables
                 // may need to change data structure type otherwise SQL conversion error, so create new column of the correct type,
                 // map data from old column and drop old column
 
                 //Age
-                + "ALTER TABLE " + tableName + " ALTER COLUMN DAG int NOT NULL;"
+//                + "ALTER TABLE " + tableName + " ALTER COLUMN DAG int NOT NULL;"
 
                 //Country
-                + "ALTER TABLE " + tableName + " ADD COUNTRY VARCHAR_IGNORECASE;"
-                + "UPDATE " + tableName + " SET COUNTRY = '" + country + "' WHERE DCT = " + country.getEuromodCountryCode() + ";"
-                + "ALTER TABLE " + tableName + " DROP COLUMN DCT;"
+//                + "ALTER TABLE " + tableName + " ADD COUNTRY VARCHAR_IGNORECASE;"
+//                + "UPDATE " + tableName + " SET COUNTRY = '" + country + "' WHERE DCT = " + country.getEuromodCountryCode() + ";"
+//                + "ALTER TABLE " + tableName + " DROP COLUMN DCT;"
 
                 //Education
-                + "ALTER TABLE " + tableName + " ADD EDUCATION VARCHAR_IGNORECASE;"
-                + "UPDATE " + tableName + " SET EDUCATION = 'Low' WHERE deh < 2;"
-                + "UPDATE " + tableName + " SET EDUCATION = 'Medium' WHERE deh >= 2 AND deh < 5;"
-                + "UPDATE " + tableName + " SET EDUCATION = 'High' WHERE deh = 5;"
-                + "ALTER TABLE " + tableName + " DROP COLUMN deh;"
+//                + "ALTER TABLE " + tableName + " ADD EDUCATION VARCHAR_IGNORECASE;"
+//                + "UPDATE " + tableName + " SET EDUCATION = 'Low' WHERE deh < 2;"
+//                + "UPDATE " + tableName + " SET EDUCATION = 'Medium' WHERE deh >= 2 AND deh < 5;"
+//                + "UPDATE " + tableName + " SET EDUCATION = 'High' WHERE deh = 5;"
+//                + "ALTER TABLE " + tableName + " DROP COLUMN deh;"
 
                 //Gender
-                + "ALTER TABLE " + tableName + " ADD GENDER VARCHAR_IGNORECASE;"
-                + "UPDATE " + tableName + " SET GENDER = 'Female' WHERE DGN = 0;"
-                + "UPDATE " + tableName + " SET GENDER = 'Male' WHERE DGN = 1;"
-                + "ALTER TABLE " + tableName + " DROP COLUMN DGN;"
-                + "ALTER TABLE " + tableName + " ALTER COLUMN GENDER RENAME TO DGN;"
+//                + "ALTER TABLE " + tableName + " ADD GENDER VARCHAR_IGNORECASE;"
+//                + "UPDATE " + tableName + " SET GENDER = 'Female' WHERE DGN = 0;"
+//                + "UPDATE " + tableName + " SET GENDER = 'Male' WHERE DGN = 1;"
+//                + "ALTER TABLE " + tableName + " DROP COLUMN DGN;"
+//                + "ALTER TABLE " + tableName + " ALTER COLUMN GENDER RENAME TO DGN;"
             );
             stat.execute(
 
                 //Weights
-                "ALTER TABLE " + tableName + " ALTER COLUMN DWT RENAME TO WEIGHT;"
-                + "ALTER TABLE " + tableName + " ALTER COLUMN WEIGHT double;"
+//                "ALTER TABLE " + tableName + " ALTER COLUMN DWT RENAME TO WEIGHT;"
+//                + "ALTER TABLE " + tableName + " ALTER COLUMN WEIGHT double;"
 
                 //Labour Market Economic Status
-                + "ALTER TABLE " + tableName + " ADD ACTIVITY_STATUS VARCHAR_IGNORECASE;"
-                + "UPDATE " + tableName + " SET ACTIVITY_STATUS = 'EmployedOrSelfEmployed' WHERE LES >= 1 AND LES <= 3;"
-                + "UPDATE " + tableName + " SET ACTIVITY_STATUS = 'Student' WHERE LES = 0 OR LES = 6;"
-                + "UPDATE " + tableName + " SET ACTIVITY_STATUS = 'Retired' WHERE LES = 4;"
-                + "UPDATE " + tableName + " SET ACTIVITY_STATUS = 'NotEmployed' WHERE LES = 5 OR LES >= 7;"
+//                + "ALTER TABLE " + tableName + " ADD ACTIVITY_STATUS VARCHAR_IGNORECASE;"
+//                + "UPDATE " + tableName + " SET ACTIVITY_STATUS = 'EmployedOrSelfEmployed' WHERE LES >= 1 AND LES <= 3;"
+//                + "UPDATE " + tableName + " SET ACTIVITY_STATUS = 'Student' WHERE LES = 0 OR LES = 6;"
+//                + "UPDATE " + tableName + " SET ACTIVITY_STATUS = 'Retired' WHERE LES = 4;"
+//                + "UPDATE " + tableName + " SET ACTIVITY_STATUS = 'NotEmployed' WHERE LES = 5 OR LES >= 7;"
 
                 //Health
-                + "ALTER TABLE " + tableName + " ADD HEALTH VARCHAR_IGNORECASE;"
-                + "UPDATE " + tableName + " SET HEALTH = 'Good' WHERE LES != 8;"
-                + "UPDATE " + tableName + " SET HEALTH = 'Poor' WHERE LES = 8;"
-                + "ALTER TABLE " + tableName + " DROP COLUMN LES;"
+//                + "ALTER TABLE " + tableName + " ADD HEALTH VARCHAR_IGNORECASE;"
+//                + "UPDATE " + tableName + " SET HEALTH = 'Good' WHERE LES != 8;"
+//                + "UPDATE " + tableName + " SET HEALTH = 'Poor' WHERE LES = 8;"
+//                + "ALTER TABLE " + tableName + " DROP COLUMN LES;"
 
                 //Long-term sick and disabled
-                + "ALTER TABLE " + tableName + " ALTER COLUMN DDI int;"
-                + "ALTER TABLE " + tableName + " ALTER COLUMN DDI RENAME TO DLLTSD;"
+//                + "ALTER TABLE " + tableName + " ALTER COLUMN DDI int;"
+//                + "ALTER TABLE " + tableName + " ALTER COLUMN DDI RENAME TO DLLTSD;"
 
                 //social care provision
-                + "ALTER TABLE " + tableName + " ALTER COLUMN LCR01 int;"
-                + "ALTER TABLE " + tableName + " ALTER COLUMN LCR01 RENAME TO CARER;"
+//                + "ALTER TABLE " + tableName + " ALTER COLUMN LCR01 int;"
+//                + "ALTER TABLE " + tableName + " ALTER COLUMN LCR01 RENAME TO CARER;"
 
                 //Labour hours
                 //XXX: Could set " + Parameters.HOURS_WORKED_WEEKLY + ", earnings, labour cost etc. to 0 if retired.
                 // However, the data does not conform - see idperson 101, who is retired pensioner aged 80, but who declares lhw = 40
                 // i.e. works 40 hours per week and has a sizeable earnings and employer social contributions.
-                + "ALTER TABLE " + tableName + " ALTER COLUMN LHW int;"
-                + "ALTER TABLE " + tableName + " ALTER COLUMN LHW RENAME TO " + Parameters.HOURS_WORKED_WEEKLY.toUpperCase() + ";"
+//                + "ALTER TABLE " + tableName + " ALTER COLUMN LHW int;"
+//                + "ALTER TABLE " + tableName + " ALTER COLUMN LHW RENAME TO " + Parameters.HOURS_WORKED_WEEKLY.toUpperCase() + ";"
 
                 //Region
-                + "ALTER TABLE " + tableName + " ADD REGION VARCHAR_IGNORECASE;"
+                "ALTER TABLE " + tableName + " ADD REGION VARCHAR_IGNORECASE;"
 
                 //adjust name for tax unit identifier
                 + "ALTER TABLE " + tableName + " ALTER COLUMN " + Parameters.getBenefitUnitVariableNames().getValue(country.getCountryName()) + " RENAME TO TUID;"
@@ -221,8 +307,8 @@ public class SQLDonorDataParser {
                 // enum as Self_Employed as self-employment income or loss has a bigger effect on personal wealth
                 // than employment income (or loss).
                 "ALTER TABLE " + tableName + " ADD WORK_SECTOR VARCHAR_IGNORECASE DEFAULT 'Private_Employee';"		//Here we assume by default that people are employed - this is because the MultiKeyMaps holding households have work_sector as a key, and cannot handle null values for work_sector. TODO: Need to check that this assumption is OK.
-                + "ALTER TABLE " + tableName + " ALTER COLUMN YEM DOUBLE;"
-                + "ALTER TABLE " + tableName + " ALTER COLUMN YSE DOUBLE;"
+//                + "ALTER TABLE " + tableName + " ALTER COLUMN YEM DOUBLE;"
+//                + "ALTER TABLE " + tableName + " ALTER COLUMN YSE DOUBLE;"
 
                 //TODO: Check whether we should re-install the check of activity_status = 'Employed' for definitions below, and potentially add a 'Null' value to handle cases where people are not employed.
                 + "UPDATE " + tableName + " SET WORK_SECTOR = 'Self_Employed' WHERE abs(YEM) < abs(YSE);"		//Size of earnings derived from self-employment income (including declared self-employment losses) is larger than employment income (or loss - although while yse is sometimes negative, I'm not sure if yem is ever negative), so define as self-employed.
