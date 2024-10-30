@@ -182,7 +182,7 @@ public class SQLDonorDataParser {
                         "IDPARTNER," +
                         "DAG," +
                         "CASE " +
-                            "WHEN DCT = " + country.getEuromodCountryCode() + " THEN " + country + " " +
+                            "WHEN DCT = " + country.getEuromodCountryCode() + " THEN '" + country + "' " +
                         "END AS COUNTRY," +
                         "CASE " +
                             "WHEN DEH < 2 THEN 'Low' " +
