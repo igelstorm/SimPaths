@@ -1,8 +1,6 @@
 package simpaths.data.startingpop;
 
-import java.io.File;
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.Arrays;
@@ -20,7 +18,7 @@ import javax.swing.*;
 
 public class DataParser {
 
-	public static void createDatabaseForPopulationInitialisationByYearFromCSV(Country country, String initialInputFilename, int startYear, int endYear, Connection conn) {
+	private static void createDatabaseForPopulationInitialisationByYearFromCSV(Country country, String initialInputFilename, int startYear, int endYear, Connection conn) {
 
 		//Initialise repository table for country-year-population size combinations
 		initialiseRepository(conn, startYear);
@@ -365,7 +363,7 @@ public class DataParser {
 		}
 	}
 
-	public static String stringAppender(Collection<String> strings) {
+	private static String stringAppender(Collection<String> strings) {
 		Iterator<String> iter = strings.iterator();
 		StringBuilder sb = new StringBuilder();
 		while (iter.hasNext()) {
@@ -378,15 +376,13 @@ public class DataParser {
 		return sb.toString();
 	}
 
-
-
 	/**
 	 *
 	 * GENERATE DATABASE TABLES TO INITIALISE SIMULATED POPULATION CROSS-SECTION FROM CSV FILES
 	 * @param country
 	 *
 	 */
-	public static void databaseFromCSV(Country country, boolean showGui) {
+	public static void databaseFromCSV(Country country, boolean showGui, Connection conn) {
 
 		String title = "Building database tables for starting populations";
 		JFrame databaseFrame = null;
@@ -400,36 +396,14 @@ public class DataParser {
 		}
 		System.out.println(title);
 
-		// start work
-		Connection conn = null;
-		try {
-			Class.forName("org.h2.Driver");
-			conn = DriverManager.getConnection("jdbc:h2:file:./input" + File.separator + "input;TRACE_LEVEL_FILE=0;TRACE_LEVEL_SYSTEM_OUT=0;AUTO_SERVER=TRUE", "sa", "");
-
-			Parameters.setPopulationInitialisationInputFileName("population_initial_" + country.toString());
-
-			//This calls a method creating both the donor population tables and initial populations for every year between minStartYear and maxStartYear.
-			DataParser.createDatabaseForPopulationInitialisationByYearFromCSV(country, Parameters.getPopulationInitialisationInputFileName(), Parameters.getMinStartYear(), Parameters.getMaxStartYear(), conn);
-
-			conn.close();
-		}
-		catch(ClassNotFoundException|SQLException e){
-			if(e instanceof ClassNotFoundException) {
-				System.out.println( "ERROR: Class not found: " + e.getMessage() + "\nCheck that the input.h2.db "
-						+ "exists in the input folder.  If not, unzip the input.h2.zip file and store the resulting "
-						+ "input.h2.db in the input folder!\n");
-			}
-			else {
-				throw new IllegalArgumentException("SQL Exception thrown! " + e.getMessage());
-			}
-		}
-		finally {
-			try {
-				if (conn != null) { conn.close(); }
-			} catch (SQLException e) {
-				e.printStackTrace();
-			}
-		}
+		// Create both the donor population tables and initial populations for every year between startYear and endYear.
+		DataParser.createDatabaseForPopulationInitialisationByYearFromCSV(
+			country,
+			Parameters.getPopulationInitialisationInputFileName(),
+			Parameters.getMinStartYear(),
+			Parameters.getMaxStartYear(),
+			conn
+		);
 
 		// remove message box
 		if (databaseFrame != null)

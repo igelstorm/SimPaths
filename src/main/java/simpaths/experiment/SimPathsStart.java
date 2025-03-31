@@ -6,6 +6,9 @@ import java.awt.Dimension;
 import org.apache.commons.cli.*;
 import java.awt.Toolkit;
 import java.io.*;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
@@ -32,6 +35,7 @@ import microsim.gui.shell.MicrosimShell;
 import simpaths.model.enums.Country;
 import simpaths.data.*;
 import simpaths.model.taxes.database.TaxDonorDataParser;
+import simpaths.support.DatabaseManager;
 
 
 /**
@@ -71,8 +75,8 @@ public class SimPathsStart implements ExperimentBuilder {
 		} else {
 			try {
 				runGUIlessSetup(4);
-			} catch (FileNotFoundException f) {
-				System.err.println(f.getMessage());
+			} catch (FileNotFoundException | SQLException e) {
+				System.err.println(e.getMessage());
 			};
 		}
 
@@ -204,7 +208,7 @@ public class SimPathsStart implements ExperimentBuilder {
 		model.setCollector(collector);
 	}
 
-	private static void runGUIlessSetup(int option) throws FileNotFoundException {
+	private static void runGUIlessSetup(int option) throws FileNotFoundException, SQLException {
 
 		// Detect if data available; set to testing data if not
 		Collection<File> testList = FileUtils.listFiles(new File(Parameters.getInputDirectoryInitialPopulations()), new String[]{"csv"}, false);
@@ -329,7 +333,13 @@ public class SimPathsStart implements ExperimentBuilder {
 
 		if (choices[0] || choices[1]) {
 			// rebuild databases for population cross-section used to initialise simulated population
-			DataParser.databaseFromCSV(country, showGui); // Initial database tables
+			Parameters.setPopulationInitialisationInputFileName("population_initial_" + country.toString());
+			// Initial database tables
+			try (Connection conn = DatabaseManager.getConnection()) {
+				DataParser.databaseFromCSV(country, showGui, conn);
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
 		}
 
 		if (choices[2]) {

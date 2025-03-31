@@ -8,6 +8,7 @@ import org.yaml.snakeyaml.Yaml;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.lang.reflect.Field;
+import java.sql.SQLException;
 import java.util.Map;
 
 import simpaths.data.Parameters;
@@ -93,8 +94,11 @@ public class SimPathsMultiRun extends MultiRun {
 		country = Country.getCountryFromNameString(countryString);
 
 		if (flagDatabaseSetup) {
-
-			Parameters.databaseSetup(country, executeWithGui, startYear);
+			try {
+				Parameters.databaseSetup(country, executeWithGui, startYear);
+			} catch (SQLException e) {
+				System.err.println(e.getMessage());
+			}
 		} else {
 			// standard simulation
 

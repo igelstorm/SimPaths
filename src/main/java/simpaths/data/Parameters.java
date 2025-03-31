@@ -5,6 +5,8 @@ package simpaths.data;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
+import java.sql.Connection;
+import java.sql.SQLException;
 import java.util.*;
 
 // import plug-in packages
@@ -29,6 +31,7 @@ import simpaths.model.taxes.DonorTaxUnit;
 import simpaths.model.decisions.Grids;
 import simpaths.model.taxes.MatchFeature;
 import simpaths.model.taxes.database.TaxDonorDataParser;
+import simpaths.support.DatabaseManager;
 
 import static microsim.statistics.regression.RegressionUtils.appendCoefficientMaps;
 
@@ -3312,14 +3315,15 @@ public class Parameters {
         return val;
     }
 
-    public static void databaseSetup(Country country, boolean executeWithGui, int startYear) {
-
+    public static void databaseSetup(Country country, boolean executeWithGui, int startYear) throws SQLException {
         // remove database file if it exists
         String filePath = "./input" + File.separator + "input.mv.db";
         safeDelete(filePath);
 
-        // populate new database for starting data
-        DataParser.databaseFromCSV(country, executeWithGui); // Initial database tables
+        Parameters.setPopulationInitialisationInputFileName("population_initial_" + country.toString());
+        try (Connection conn = DatabaseManager.getConnection()) {
+            DataParser.databaseFromCSV(country, executeWithGui, conn);
+        }
 
         // populate new database for tax donors
         String taxDonorInputFilename = "tax_donor_population_" + country;
