@@ -60,13 +60,13 @@ class DataParserTest {
             ResultSet rs = stmt.executeQuery("SCRIPT");
             StringBuilder result = new StringBuilder();
             while (rs.next()) {
-                result.append(rs.getString(1).replaceAll("\\r", "")).append("\n");
+                result.append(normalize(rs.getString(1))).append("\n");
             }
 
             Path outputPath = Paths.get("src/test/resources/expected-db-state.sql");
             String expected = null;
             if (Files.exists(outputPath)) {
-                expected = Files.readString(outputPath).replaceAll("\\r", "");
+                expected = normalize(Files.readString(outputPath));
             }
 
             if (expected == null) {
@@ -74,8 +74,6 @@ class DataParserTest {
                 Files.writeString(outputPath, result.toString());
                 System.out.println("Baseline created at: " + outputPath);
             } else {
-                System.out.println(expected.split("\n")[3]);
-                System.out.println(result.toString().split("\n")[3]);
                 Patch<String> patch = DiffUtils.diff(asList(expected.split("\n")), asList(result.toString().split("\n")));
                 for (AbstractDelta<String> delta : patch.getDeltas()) {
                     System.out.println(delta);
@@ -85,5 +83,11 @@ class DataParserTest {
                 }
             }
         }
+    }
+
+    private static String normalize(String str) {
+        return str.replaceAll("\\r", "")
+            .replaceAll("SALT '[0-9a-f]*'", "SALT 'removed'")
+            .replaceAll("HASH '[0-9a-f]*'", "SALT 'removed'");
     }
 }
