@@ -1,24 +1,28 @@
 package simpaths.data.statistics;
 
-import microsim.statistics.CrossSection;
-import microsim.statistics.IDoubleSource;
-import microsim.statistics.functions.MeanArrayFunction;
+import java.util.Arrays;
+import java.util.Set;
+import java.util.TreeSet;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
+
+import microsim.statistics.CrossSection;
+import microsim.statistics.IDoubleSource;
+import microsim.statistics.functions.MeanArrayFunction;
 import simpaths.data.filters.EmploymentHistoryFilter;
 import simpaths.model.Person;
+import simpaths.model.SimPathsModel;
 import simpaths.model.enums.Les_c4;
-
-import java.util.Arrays;
-import java.util.List;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 @DisplayName("Calculating employment statistics")
 class EmploymentStatisticsTest {
 
-    private static List<Person> testPopulation;
+    private static Set<Person> testPopulation;
 
     private static Person createTestPerson(
             Les_c4 les_c4_lag1,
@@ -34,7 +38,8 @@ class EmploymentStatisticsTest {
     @BeforeAll
     public static void setupTestPopulation() {
 
-        testPopulation = Arrays.asList(
+        testPopulation = new TreeSet<>(Arrays.asList(
+        // testPopulation = new HashSet<>(Arrays.asList(
                 // 25% move from employment into unemployment
                 createTestPerson(Les_c4.EmployedOrSelfEmployed, Les_c4.NotEmployed),
                 createTestPerson(Les_c4.EmployedOrSelfEmployed, Les_c4.Student),
@@ -54,13 +59,17 @@ class EmploymentStatisticsTest {
                 createTestPerson(Les_c4.Retired, Les_c4.EmployedOrSelfEmployed),
                 createTestPerson(Les_c4.Retired, Les_c4.NotEmployed),
                 createTestPerson(Les_c4.Student, Les_c4.EmployedOrSelfEmployed)
-        );
+        ));
     }
 
     @Test
     @DisplayName("Proportion becoming unemployed")
     public void proportionEmpToNotEmp() {
+        SimPathsModel model = mock();
+        when(model.getPersons()).thenReturn(testPopulation);
 
+        EmploymentStatistics employmentStatistics = new EmploymentStatistics();
+        employmentStatistics.update(model);
 
         // Entering unemployment prevalence
         EmploymentHistoryFilter employmentHistoryEmployed = new EmploymentHistoryFilter(Les_c4.EmployedOrSelfEmployed);
@@ -71,6 +80,7 @@ class EmploymentStatisticsTest {
         MeanArrayFunction isEmpToNotEmp = new MeanArrayFunction(personsEmpToNotEmp);
         isEmpToNotEmp.applyFunction();
         assertEquals(0.25, isEmpToNotEmp.getDoubleValue(IDoubleSource.Variables.Default));
+        assertEquals(0.25, employmentStatistics.getEmpToNotEmp());
 
     }
 
