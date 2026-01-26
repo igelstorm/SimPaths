@@ -1194,6 +1194,11 @@ public class Parameters {
         coeffCovarianceChildcareC1a = ExcelAssistant.loadCoefficientMap(Parameters.getInputDirectory() + "reg_childcarecost.xlsx", countryString + "_C1a", 1);
         coeffCovarianceChildcareC1b = ExcelAssistant.loadCoefficientMap(Parameters.getInputDirectory() + "reg_childcarecost.xlsx", countryString + "_C1b", 1);
 
+        // // Uncomment these lines to enable bootstrapping for these three (fairly arbitrary) example processes:
+        // coeffCovarianceWagesMalesE = RegressionUtils.bootstrap(coeffCovarianceWagesMalesE);
+        // coeffCovarianceHM1Level = RegressionUtils.bootstrap(coeffCovarianceHM1Level);
+        // coeffCovarianceHM2LevelMales = RegressionUtils.bootstrap(coeffCovarianceHM2LevelMales);
+
         //Bootstrap the coefficients
         if(bootstrapAll) {
 
