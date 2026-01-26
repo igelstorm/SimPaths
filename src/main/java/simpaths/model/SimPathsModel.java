@@ -818,6 +818,20 @@ public class SimPathsModel extends AbstractSimulationManager implements EventLis
                 elapsedTime0 = System.currentTimeMillis();
                 System.out.println("Starting year " + year);
                 if (commentsOn) log.info("Starting year " + year);
+
+                System.out.println(
+                    "Parameters.getRegWagesMalesE().getCoefficient(\"Dag\") == " + 
+                    Parameters.getRegWagesMalesE().getCoefficient("Dag")
+                );
+                System.out.println(
+                    "Parameters.getRegHealthHM1Level().getCoefficient(\"Dgn\") == " + 
+                    Parameters.getRegHealthHM1Level().getCoefficient("Dgn")
+                );
+                System.out.println(
+                    "Parameters.getRegHealthHM2LevelMales().getCoefficient(\"EmployedToUnemployed\") == " + 
+                    Parameters.getRegHealthHM2LevelMales().getCoefficient("EmployedToUnemployed")
+                );
+
             }
             case EndYear -> {
 
