@@ -16,7 +16,16 @@
 * - Note that in the following scripts some standard commands may be 
 *   abbreviated: (gen)erate, (tab)ulate, (sum)marize, (di)splay, 
 *   (cap)ture, (qui)etly, (noi)sily
-
+*
+* SETUP:
+*
+* Before running:
+* 1. Create initial population data by running:
+*        input/InitialPopulations/compile/00_master.do
+* 2. Install required user-written Stata packages listed below.
+* 3. Review the USER CONFIGURATION section and update any
+*    environment-specific paths if required.
+*
 *Stata packages to install 
 *ssc install fre
 *ssc install tsspell 
@@ -43,16 +52,24 @@ set type double
 set maxvar 30000
 set matsize 1000
 
+/**************************************************************************************
+* USER CONFIGURATION
+*
+* Users running this project in a new environment should only need to update settings
+* in this section.
+**************************************************************************************/
+
+global project_root ".../SimPaths"
 
 /**************************************************************************************
 * DEFINE DIRECTORIES
 **************************************************************************************/
 
 * Working directory
-global dir_work "D:\Dasha\ESSEX\_SimPaths\_SimPaths_UK\regression_estimates"
+global dir_work "${project_root}/input/InitialPopulations/compile/RegressionEstimates"
 
 * Directory which contains do files
-global dir_do "${dir_work}/do"
+global dir_do "${dir_work}"
 
 * Directory which contains log files 
 global dir_log "${dir_work}/log"
@@ -64,10 +81,10 @@ global dir_raw_results "${dir_work}/raw_results"
 global dir_results "${dir_work}/results"
 
 * Pooled dataset for estimates  
-global estimation_sample "D:\Dasha\ESSEX\_SimPaths\_SimPaths_UK\initial_populations\data\UKHLS_pooled_ipop.dta"
+global estimation_sample "${project_root}/input/InitialPopulations/data/UKHLS_pooled_ipop.dta"
 
 * Pooled dataset with predicted wages after Heckman   
-global estimation_sample2 "D:\Dasha\ESSEX\_SimPaths\_SimPaths_UK\initial_populations\data\UKHLS_pooled_ipop2.dta"
+global estimation_sample2 "${project_root}/input/InitialPopulations/data/UKHLS_pooled_ipop2.dta"
 
 * Directory containing external input data 
 global dir_external_data "$dir_work/external_data"
@@ -84,6 +101,19 @@ global dir_do_validation "${dir_work}/internal_validation/do_files"
 
 * Directory for internal validation do-files 
 global dir_validation_graphs "${dir_work}/internal_validation/graphs"
+
+/**************************************************************************************
+* CREATE OUTPUT DIRECTORIES IF NEEDED
+**************************************************************************************/
+
+capture mkdir "$dir_log"
+capture mkdir "$dir_raw_results"
+capture mkdir "$dir_results"
+// capture mkdir "$dir_external_data"
+// capture mkdir "$weight_checks"
+
+***************************************************************************************
+***************************************************************************************
 
 global country "UK" 
 
