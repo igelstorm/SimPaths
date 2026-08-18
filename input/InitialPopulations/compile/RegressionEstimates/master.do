@@ -87,20 +87,20 @@ global estimation_sample "${project_root}/input/InitialPopulations/data/UKHLS_po
 global estimation_sample2 "${project_root}/input/InitialPopulations/data/UKHLS_pooled_ipop2.dta"
 
 * Directory containing external input data 
-global dir_external_data "$dir_work/external_data"
+global dir_external_data "${project_root}/input"
 
 * Directory containing results of comparison of various weights   
 global weight_checks "${dir_work}/weight_checks"
 
 *********************Internal validation****************************************
 * Directory to save data for internal validation 
-global dir_validation_data "${dir_work}/internal_validation/data"
+global dir_validation_data "${project_root}/validation/01_estimate_validation/data"
 
 * Directory for internal validation do-files 
-global dir_do_validation "${dir_work}/internal_validation/do_files"
+global dir_do_validation "${project_root}/validation/01_estimate_validation/do_files"
 
 * Directory for internal validation do-files 
-global dir_validation_graphs "${dir_work}/internal_validation/graphs"
+global dir_validation_graphs "${project_root}/validation/01_estimate_validation/graphs"
 
 /**************************************************************************************
 * CREATE OUTPUT DIRECTORIES IF NEEDED
@@ -111,6 +111,22 @@ capture mkdir "$dir_raw_results"
 capture mkdir "$dir_results"
 // capture mkdir "$dir_external_data"
 // capture mkdir "$weight_checks"
+capture mkdir "$dir_validation_data"
+
+capture mkdir "$dir_raw_results/education"
+capture mkdir "$dir_raw_results/fertility"
+capture mkdir "$dir_raw_results/financial_distress"
+capture mkdir "$dir_raw_results/health"
+capture mkdir "$dir_raw_results/health_mental"
+capture mkdir "$dir_raw_results/health_wellbeing"
+capture mkdir "$dir_raw_results/home_ownership"
+capture mkdir "$dir_raw_results/income"
+capture mkdir "$dir_raw_results/leave_parental_home"
+capture mkdir "$dir_raw_results/leave_parental_home"
+capture mkdir "$dir_raw_results/partnership"
+capture mkdir "$dir_raw_results/retirement"
+capture mkdir "$dir_raw_results/social_care"
+capture mkdir "$dir_raw_results/wages"
 
 ***************************************************************************************
 ***************************************************************************************
