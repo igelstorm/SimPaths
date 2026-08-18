@@ -116,18 +116,16 @@ do "${dir_do}/programs.do"
 ==============================================================================*/
 
 * Stats for if conditions
-/*
 table stm, stat (count NeedCare) stat (mean NeedCare)								// [2015, 2022]
 table stm, stat (count ReceiveCare) stat (mean ReceiveCare)							// [2016, 2021] but with significant decrease in 2020 and 2021
 table stm, stat (count receive_formal_care) stat (mean receive_formal_care)			// [2016, 2021] but with significant decrease in 2020 and 2021
 table stm, stat (count receive_informal_care) stat (mean receive_informal_care)		// [2016, 2021] but with significant decrease in 2020 and 2021
 table stm, stat (count provide_informal_care) stat (mean provide_informal_care)		// [2015, 2024] also 2014, but fewer hours
-*/
-table stm, c(count NeedCare mean NeedCare)
-table stm, c(count ReceiveCare mean ReceiveCare)
-table stm, c(count receive_formal_care mean receive_formal_care)
-table stm, c(count receive_informal_care mean receive_informal_care)
-table stm, c(count provide_informal_care mean provide_informal_care)
+// table stm, c(count NeedCare mean NeedCare)
+// table stm, c(count ReceiveCare mean ReceiveCare)
+// table stm, c(count receive_formal_care mean receive_formal_care)
+// table stm, c(count receive_informal_care mean receive_informal_care)
+// table stm, c(count provide_informal_care mean provide_informal_care)
 
 
 /* Age variables (for experimenting -> copy and paste in the specification)
