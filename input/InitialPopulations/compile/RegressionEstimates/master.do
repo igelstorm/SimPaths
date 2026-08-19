@@ -107,12 +107,12 @@ global dir_validation_graphs "${project_root}/validation/01_estimate_validation/
 **************************************************************************************/
 
 capture mkdir "$dir_log"
-capture mkdir "$dir_raw_results"
 capture mkdir "$dir_results"
 // capture mkdir "$dir_external_data"
 // capture mkdir "$weight_checks"
 capture mkdir "$dir_validation_data"
 
+capture mkdir "$dir_raw_results"
 capture mkdir "$dir_raw_results/education"
 capture mkdir "$dir_raw_results/fertility"
 capture mkdir "$dir_raw_results/financial_distress"
@@ -127,6 +127,17 @@ capture mkdir "$dir_raw_results/partnership"
 capture mkdir "$dir_raw_results/retirement"
 capture mkdir "$dir_raw_results/social_care"
 capture mkdir "$dir_raw_results/wages"
+
+capture mkdir "$dir_validation_graphs"
+capture mkdir "$dir_validation_graphs/education"
+capture mkdir "$dir_validation_graphs/fertility"
+capture mkdir "$dir_validation_graphs/health"
+capture mkdir "$dir_validation_graphs/home_ownership"
+capture mkdir "$dir_validation_graphs/income"
+capture mkdir "$dir_validation_graphs/leave_parental_home"
+capture mkdir "$dir_validation_graphs/partnership"
+capture mkdir "$dir_validation_graphs/retirement"
+capture mkdir "$dir_validation_graphs/wages"
 
 ***************************************************************************************
 ***************************************************************************************
