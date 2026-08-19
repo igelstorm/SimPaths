@@ -22,7 +22,7 @@
 ********************************************
 
 * Overall 
-use "$dir_validation_data/H1a_sample", clear
+use "$dir_validation_data/H1_sample", clear
 
 sum p1-p5 // inspect negative values 
 		
@@ -52,7 +52,7 @@ graph export "$dir_validation_graphs/health/int_validation_H1a_health_init_edu_h
 	
 	
 * Year 
-use "$dir_validation_data/H1a_sample", clear
+use "$dir_validation_data/H1_sample", clear
 
 sum p1-p5 // inspect negative values 
 		
@@ -307,7 +307,7 @@ restore
 **********************************************
 
 * Overall 
-use "$dir_validation_data/H1b_sample", clear
+use "$dir_validation_data/H1_sample", clear
 
 sum p1-p5 // inspect negative values 
 		
@@ -337,7 +337,7 @@ graph export "$dir_validation_graphs/health/int_validation_H1a_health_left_edu_h
 	
 	
 * Year 
-use "$dir_validation_data/H1b_sample", clear
+use "$dir_validation_data/H1_sample", clear
 
 sum p1-p5 // inspect negative values 
 		
@@ -592,7 +592,7 @@ restore
 ***********************************************************
 
 * Overall 
-use "$dir_validation_data/H2b_sample", clear 
+use "$dir_validation_data/H2_sample", clear 
 
 set seed 12345
 gen rnd = runiform() 	
@@ -618,7 +618,7 @@ graph export "$dir_validation_graphs/health/int_validation_H2b_disablilty_left_e
 
 
 * Year 
-use "$dir_validation_data/H2b_sample", clear
+use "$dir_validation_data/H2_sample", clear
 
 // construct multiple versions of the predicted outcome allowing for different 
 // random draws 
