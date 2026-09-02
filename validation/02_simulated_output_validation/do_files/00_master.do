@@ -20,6 +20,16 @@ set mem 200m
 set type double
 
 
+/**************************************************************************************
+* USER CONFIGURATION
+*
+* Users running this project in a new environment should only need to update settings
+* in this section.
+**************************************************************************************/
+
+global project_root ".../SimPaths"
+
+
 /*******************************************************************************
 * 1 - STATIC SET UP 
 *******************************************************************************/
@@ -39,13 +49,8 @@ global silc_UDB = "UDB_c"
 * DEFINE DIRECTORIES
 *******************************************************************************/
 
-/*
-"/Users/ashleyburdett/Library/CloudStorage/Box-Box/CeMPA shared area/_SimPaths/_SimPathsUK"
-"C:\Users\aburde\Box\CeMPA shared area\_SimPaths\_SimPathsUK"
-*/
-
 * Individual directory 
-global dir_ind "/Users/ashleyburdett/Library/CloudStorage/Box-Box/CeMPA shared area/_SimPaths/_SimPathsUK"
+global dir_ind "$project_root"
 
 * Main folder
 global path "$dir_ind/validation/02_simulated_output_validation"
@@ -57,7 +62,7 @@ global dir_do_files "$path/do_files"
 global dir_work "$path/data" 
 
 * UKHLS dataset folder 
-global dir_UKHLS_data "$dir_ind/input 2026.03.04"
+global dir_UKHLS_data "$dir_ind/input/InitialPopulations/data"
 
 * Data folder 
 global dir_data "$path/data"
@@ -125,7 +130,7 @@ foreach align in `alignments' {
 *******************************************************************************/
 
 	* Simulated data CSV files folder
-	global dir_simulated_data "${dir_ind}/_new_release/output/`align'"
+	global dir_simulated_data "${dir_ind}/output/`align'"
 		
 	* Graphs folder 
 	global dir_output_files "$path/graphs/`align'" 	
@@ -134,33 +139,32 @@ foreach align in `alignments' {
 /*******************************************************************************
 * CREATE OUTPUT FOLDERS
 *******************************************************************************/	
-	
-	/*
-	mkdir "$path/graphs/`align'"
 
-	mkdir "$path/graphs/`align'/children" 
-	mkdir "$path/graphs/`align'/correlations" 
-	mkdir "$path/graphs/`align'/disability" 
-	mkdir "$path/graphs/`align'/economic_activity" 
-	mkdir "$path/graphs/`align'/education"
-	mkdir "$path/graphs/`align'/health" 
-	mkdir "$path/graphs/`align'/hours_worked" 
-	mkdir "$path/graphs/`align'/income"
-	mkdir "$path/graphs/`align'/income/capital_income"
-	mkdir "$path/graphs/`align'/income/pension_income"
-	mkdir "$path/graphs/`align'/income/disposable_income"
-	mkdir "$path/graphs/`align'/income/equivalised_disposable_income"
-	mkdir "$path/graphs/`align'/income/gross_income"
-	mkdir "$path/graphs/`align'/income/gross_labour_income"
-	mkdir "$path/graphs/`align'/income/income_shares"
-	mkdir "$path/graphs/`align'/inequality" 
-	mkdir "$path/graphs/`align'/partnership" 
-	mkdir "$path/graphs/`align'/poverty" 
-	mkdir "$path/graphs/`align'/wages" 
-	mkdir "$path/graphs/`align'/social_care" 
+	capture mkdir "$path/graphs"	
+	capture mkdir "$path/graphs/`align'"
+
+	capture mkdir "$path/graphs/`align'/children" 
+	capture mkdir "$path/graphs/`align'/correlations" 
+	capture mkdir "$path/graphs/`align'/disability" 
+	capture mkdir "$path/graphs/`align'/economic_activity" 
+	capture mkdir "$path/graphs/`align'/education"
+	capture mkdir "$path/graphs/`align'/health" 
+	capture mkdir "$path/graphs/`align'/hours_worked" 
+	capture mkdir "$path/graphs/`align'/income"
+	capture mkdir "$path/graphs/`align'/income/capital_income"
+	capture mkdir "$path/graphs/`align'/income/pension_income"
+	capture mkdir "$path/graphs/`align'/income/disposable_income"
+	capture mkdir "$path/graphs/`align'/income/equivalised_disposable_income"
+	capture mkdir "$path/graphs/`align'/income/gross_income"
+	capture mkdir "$path/graphs/`align'/income/gross_labour_income"
+	capture mkdir "$path/graphs/`align'/income/income_shares"
+	capture mkdir "$path/graphs/`align'/inequality" 
+	capture mkdir "$path/graphs/`align'/partnership" 
+	capture mkdir "$path/graphs/`align'/poverty" 
+	capture mkdir "$path/graphs/`align'/wages" 
+	capture mkdir "$path/graphs/`align'/social_care" 
 	
-}
-	*/
+// }
 	
 
 /*******************************************************************************
