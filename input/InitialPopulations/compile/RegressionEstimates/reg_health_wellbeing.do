@@ -215,7 +215,7 @@ scalar drop r2_p N chi2 ll
 *Stage 2
 *Female
 reghdfe dhe_mcs ///
-ib11.exp_emp i.exp_poverty i.exp_incchange D.log_income financial_distress ///
+ib13.exp_emp ib1.exp_poverty i.exp_incchange D.log_income financial_distress ///
 y2020 y2021 ///
 L.i.dhh_owned L.i.dcpst L.dnc L.dhe_pcs L.ib8.drgn L.i.ydses_c5 L.dlltsd01 L.dhe_mcs ///
 L.dag L.dagsq i.deh_c3 stm ///
@@ -313,16 +313,21 @@ forvalues i = 1/`no_vars' {
     }
 }
 
+// Reverse sign of "Continuous employment" coefficient to obtain "Exiting employment" effect
+matrix nonzero_b[1,1] = -nonzero_b[1,1]
+// Reverse sign of "No poverty" coefficient to obtain "Entering poverty" effect
+matrix nonzero_b[1,4] = -nonzero_b[1,4]
+
 putexcel set "$dir_results/reg_health_wellbeing", sheet("DHE_MCS2_Females") modify
 putexcel A1 = matrix(nonzero_b'), names nformat(number_d2) 
 
 * Labelling 
 
 putexcel A1 = "REGRESSOR"
-putexcel A2 = "EmployedToUnemployed"
+putexcel A2 = "EmployedToUnemployed" // actually "continuous employment" with sign reversed
 putexcel A3 = "UnemployedToEmployed"
 putexcel A4 = "PersistentUnemployed"
-putexcel A5 = "NonPovertyToPoverty"
+putexcel A5 = "NonPovertyToPoverty" // actually "no poverty" with sign reversed
 putexcel A6 = "PovertyToNonPoverty"
 putexcel A7 = "PersistentPoverty"
 putexcel A8 = "RealIncomeChange"
@@ -333,10 +338,10 @@ putexcel A12 = "Covid_2021_D"
 
 
 putexcel B1 = "COEFFICIENT"
-putexcel C1 = "EmployedToUnemployed"
+putexcel C1 = "EmployedToUnemployed" // actually "continuous employment" with sign reversed
 putexcel D1 = "UnemployedToEmployed"
 putexcel E1 = "PersistentUnemployed"
-putexcel F1 = "NonPovertyToPoverty"
+putexcel F1 = "NonPovertyToPoverty" // actually "no poverty" with sign reversed
 putexcel G1 = "PovertyToNonPoverty"
 putexcel H1 = "PersistentPoverty"
 putexcel I1 = "RealIncomeChange"
@@ -361,7 +366,7 @@ scalar drop r2_p N chi2 ll
 *Stage 2
 *Male
 reghdfe dhe_mcs ///
-ib11.exp_emp i.exp_poverty i.exp_incchange D.log_income financial_distress ///
+ib13.exp_emp ib1.exp_poverty i.exp_incchange D.log_income financial_distress ///
 y2020 y2021 ///
 L.i.dhh_owned L.i.dcpst L.dnc L.dhe_pcs L.ib8.drgn L.i.ydses_c5 L.dlltsd01 L.dhe_mcs ///
 L.dag L.dagsq i.deh_c3 stm ///
@@ -459,16 +464,21 @@ forvalues i = 1/`no_vars' {
     }
 }
 
+// Reverse sign of "Continuous employment" coefficient to obtain "Exiting employment" effect
+matrix nonzero_b[1,1] = -nonzero_b[1,1]
+// Reverse sign of "No poverty" coefficient to obtain "Entering poverty" effect
+matrix nonzero_b[1,4] = -nonzero_b[1,4]
+
 putexcel set "$dir_results/reg_health_wellbeing", sheet("DHE_MCS2_Males") modify
 putexcel A1 = matrix(nonzero_b'), names nformat(number_d2) 
 
 * Labelling 
 
 putexcel A1 = "REGRESSOR"
-putexcel A2 = "EmployedToUnemployed"
+putexcel A2 = "EmployedToUnemployed" // actually "continuous employment" with sign reversed
 putexcel A3 = "UnemployedToEmployed"
 putexcel A4 = "PersistentUnemployed"
-putexcel A5 = "NonPovertyToPoverty"
+putexcel A5 = "NonPovertyToPoverty" // actually "no poverty" with sign reversed
 putexcel A6 = "PovertyToNonPoverty"
 putexcel A7 = "PersistentPoverty"
 putexcel A8 = "RealIncomeChange"
@@ -479,10 +489,10 @@ putexcel A12 = "Covid_2021_D"
 
 
 putexcel B1 = "COEFFICIENT"
-putexcel C1 = "EmployedToUnemployed"
+putexcel C1 = "EmployedToUnemployed" // actually "continuous employment" with sign reversed
 putexcel D1 = "UnemployedToEmployed"
 putexcel E1 = "PersistentUnemployed"
-putexcel F1 = "NonPovertyToPoverty"
+putexcel F1 = "NonPovertyToPoverty" // actually "no poverty" with sign reversed
 putexcel G1 = "PovertyToNonPoverty"
 putexcel H1 = "PersistentPoverty"
 putexcel I1 = "RealIncomeChange"
@@ -679,7 +689,7 @@ scalar drop r2_p N chi2 ll
 *Stage 2
 *Female
 reghdfe dhe_pcs ///
-ib11.exp_emp i.exp_poverty i.exp_incchange D.log_income financial_distress ///
+ib13.exp_emp ib1.exp_poverty i.exp_incchange D.log_income financial_distress ///
 y2020 y2021 ///
 L.i.dhh_owned L.i.dcpst L.dnc L.dhe_mcs L.ib8.drgn L.i.ydses_c5 L.dlltsd01 L.dhe_pcs ///
 L.dag L.dagsq i.deh_c3 stm ///
@@ -777,16 +787,21 @@ forvalues i = 1/`no_vars' {
     }
 }
 
+// Reverse sign of "Continuous employment" coefficient to obtain "Exiting employment" effect
+matrix nonzero_b[1,1] = -nonzero_b[1,1]
+// Reverse sign of "No poverty" coefficient to obtain "Entering poverty" effect
+matrix nonzero_b[1,4] = -nonzero_b[1,4]
+
 putexcel set "$dir_results/reg_health_wellbeing", sheet("DHE_PCS2_Females") modify
 putexcel A1 = matrix(nonzero_b'), names nformat(number_d2) 
 
 * Labelling 
 
 putexcel A1 = "REGRESSOR"
-putexcel A2 = "EmployedToUnemployed"
+putexcel A2 = "EmployedToUnemployed" // actually "continuous employment" with sign reversed
 putexcel A3 = "UnemployedToEmployed"
 putexcel A4 = "PersistentUnemployed"
-putexcel A5 = "NonPovertyToPoverty"
+putexcel A5 = "NonPovertyToPoverty" // actually "no poverty" with sign reversed
 putexcel A6 = "PovertyToNonPoverty"
 putexcel A7 = "PersistentPoverty"
 putexcel A8 = "RealIncomeChange"
@@ -797,10 +812,10 @@ putexcel A12 = "Covid_2021_D"
 
 
 putexcel B1 = "COEFFICIENT"
-putexcel C1 = "EmployedToUnemployed"
+putexcel C1 = "EmployedToUnemployed" // actually "continuous employment" with sign reversed
 putexcel D1 = "UnemployedToEmployed"
 putexcel E1 = "PersistentUnemployed"
-putexcel F1 = "NonPovertyToPoverty"
+putexcel F1 = "NonPovertyToPoverty" // actually "no poverty" with sign reversed
 putexcel G1 = "PovertyToNonPoverty"
 putexcel H1 = "PersistentPoverty"
 putexcel I1 = "RealIncomeChange"
@@ -826,7 +841,7 @@ scalar drop r2_p N chi2 ll
 *Stage 2
 *Male
 reghdfe dhe_pcs ///
-ib11.exp_emp i.exp_poverty i.exp_incchange D.log_income financial_distress ///
+ib13.exp_emp ib1.exp_poverty i.exp_incchange D.log_income financial_distress ///
 y2020 y2021 ///
 L.i.dhh_owned L.i.dcpst L.dnc L.dhe_mcs L.ib8.drgn L.i.ydses_c5 L.dlltsd01 L.dhe_pcs ///
 L.dag L.dagsq i.deh_c3 stm ///
@@ -924,16 +939,21 @@ forvalues i = 1/`no_vars' {
     }
 }
 
+// Reverse sign of "Continuous employment" coefficient to obtain "Exiting employment" effect
+matrix nonzero_b[1,1] = -nonzero_b[1,1]
+// Reverse sign of "No poverty" coefficient to obtain "Entering poverty" effect
+matrix nonzero_b[1,4] = -nonzero_b[1,4]
+
 putexcel set "$dir_results/reg_health_wellbeing", sheet("DHE_PCS2_Males") modify
 putexcel A1 = matrix(nonzero_b'), names nformat(number_d2) 
 
 * Labelling 
 
 putexcel A1 = "REGRESSOR"
-putexcel A2 = "EmployedToUnemployed"
+putexcel A2 = "EmployedToUnemployed" // actually "continuous employment" with sign reversed
 putexcel A3 = "UnemployedToEmployed"
 putexcel A4 = "PersistentUnemployed"
-putexcel A5 = "NonPovertyToPoverty"
+putexcel A5 = "NonPovertyToPoverty" // actually "no poverty" with sign reversed
 putexcel A6 = "PovertyToNonPoverty"
 putexcel A7 = "PersistentPoverty"
 putexcel A8 = "RealIncomeChange"
@@ -944,10 +964,10 @@ putexcel A12 = "Covid_2021_D"
 
 
 putexcel B1 = "COEFFICIENT"
-putexcel C1 = "EmployedToUnemployed"
+putexcel C1 = "EmployedToUnemployed" // actually "continuous employment" with sign reversed
 putexcel D1 = "UnemployedToEmployed"
 putexcel E1 = "PersistentUnemployed"
-putexcel F1 = "NonPovertyToPoverty"
+putexcel F1 = "NonPovertyToPoverty" // actually "no poverty" with sign reversed
 putexcel G1 = "PovertyToNonPoverty"
 putexcel H1 = "PersistentPoverty"
 putexcel I1 = "RealIncomeChange"
@@ -1144,7 +1164,7 @@ scalar drop r2_p N chi2 ll
 *Stage 2
 *Female
 reghdfe dls ///
-ib11.exp_emp i.exp_poverty i.exp_incchange D.log_income financial_distress ///
+ib13.exp_emp ib1.exp_poverty i.exp_incchange D.log_income financial_distress ///
 y2020 y2021 ///
 L.i.dhh_owned L.i.dcpst L.dnc L.dhe_pcs L.ib8.drgn L.i.ydses_c5 L.dlltsd01 L.dls ///
 L.dag L.dagsq i.deh_c3 stm ///
@@ -1242,16 +1262,21 @@ forvalues i = 1/`no_vars' {
     }
 }
 
+// Reverse sign of "Continuous employment" coefficient to obtain "Exiting employment" effect
+matrix nonzero_b[1,1] = -nonzero_b[1,1]
+// Reverse sign of "No poverty" coefficient to obtain "Entering poverty" effect
+matrix nonzero_b[1,4] = -nonzero_b[1,4]
+
 putexcel set "$dir_results/reg_health_wellbeing", sheet("DLS2_Females") modify
 putexcel A1 = matrix(nonzero_b'), names nformat(number_d2) 
 
 * Labelling 
 
 putexcel A1 = "REGRESSOR"
-putexcel A2 = "EmployedToUnemployed"
+putexcel A2 = "EmployedToUnemployed" // actually "continuous employment" with sign reversed
 putexcel A3 = "UnemployedToEmployed"
 putexcel A4 = "PersistentUnemployed"
-putexcel A5 = "NonPovertyToPoverty"
+putexcel A5 = "NonPovertyToPoverty" // actually "no poverty" with sign reversed
 putexcel A6 = "PovertyToNonPoverty"
 putexcel A7 = "PersistentPoverty"
 putexcel A8 = "RealIncomeChange"
@@ -1262,10 +1287,10 @@ putexcel A12 = "Covid_2021_D"
 
 
 putexcel B1 = "COEFFICIENT"
-putexcel C1 = "EmployedToUnemployed"
+putexcel C1 = "EmployedToUnemployed" // actually "continuous employment" with sign reversed
 putexcel D1 = "UnemployedToEmployed"
 putexcel E1 = "PersistentUnemployed"
-putexcel F1 = "NonPovertyToPoverty"
+putexcel F1 = "NonPovertyToPoverty" // actually "no poverty" with sign reversed
 putexcel G1 = "PovertyToNonPoverty"
 putexcel H1 = "PersistentPoverty"
 putexcel I1 = "RealIncomeChange"
@@ -1290,7 +1315,7 @@ scalar drop r2_p N chi2 ll
 *Stage 2
 *Male
 reghdfe dls ///
-ib11.exp_emp i.exp_poverty i.exp_incchange D.log_income financial_distress ///
+ib13.exp_emp ib1.exp_poverty i.exp_incchange D.log_income financial_distress ///
 y2020 y2021 ///
 L.i.dhh_owned L.i.dcpst L.dnc L.dhe_pcs L.ib8.drgn L.i.ydses_c5 L.dlltsd01 L.dls ///
 L.dag L.dagsq i.deh_c3 stm ///
@@ -1388,16 +1413,21 @@ forvalues i = 1/`no_vars' {
     }
 }
 
+// Reverse sign of "Continuous employment" coefficient to obtain "Exiting employment" effect
+matrix nonzero_b[1,1] = -nonzero_b[1,1]
+// Reverse sign of "No poverty" coefficient to obtain "Entering poverty" effect
+matrix nonzero_b[1,4] = -nonzero_b[1,4]
+
 putexcel set "$dir_results/reg_health_wellbeing", sheet("DLS2_Males") modify
 putexcel A1 = matrix(nonzero_b'), names nformat(number_d2) 
 
 * Labelling 
 
 putexcel A1 = "REGRESSOR"
-putexcel A2 = "EmployedToUnemployed"
+putexcel A2 = "EmployedToUnemployed" // actually "continuous employment" with sign reversed
 putexcel A3 = "UnemployedToEmployed"
 putexcel A4 = "PersistentUnemployed"
-putexcel A5 = "NonPovertyToPoverty"
+putexcel A5 = "NonPovertyToPoverty" // actually "no poverty" with sign reversed
 putexcel A6 = "PovertyToNonPoverty"
 putexcel A7 = "PersistentPoverty"
 putexcel A8 = "RealIncomeChange"
@@ -1408,10 +1438,10 @@ putexcel A12 = "Covid_2021_D"
 
 
 putexcel B1 = "COEFFICIENT"
-putexcel C1 = "EmployedToUnemployed"
+putexcel C1 = "EmployedToUnemployed" // actually "continuous employment" with sign reversed
 putexcel D1 = "UnemployedToEmployed"
 putexcel E1 = "PersistentUnemployed"
-putexcel F1 = "NonPovertyToPoverty"
+putexcel F1 = "NonPovertyToPoverty" // actually "no poverty" with sign reversed
 putexcel G1 = "PovertyToNonPoverty"
 putexcel H1 = "PersistentPoverty"
 putexcel I1 = "RealIncomeChange"
